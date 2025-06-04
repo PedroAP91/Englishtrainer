@@ -14,9 +14,9 @@
         <span v-if="index < sentenceWords.length - 1"> </span>
       </span>
     </p>
-    <button @click="checkAnswer" :disabled="!userAnswer">Check</button>
+    <button @click="checkAnswer" :disabled="!userAnswer || answered">Check</button>
     <p v-if="feedback">{{ feedback }}</p>
-    <button @click="nextSentence">Next</button>
+    <button @click="nextSentence" :disabled="!answered">Next</button>
   </div>
 </template>
 
@@ -41,7 +41,8 @@ export default {
       originalWord: '',
       options: [],
       userAnswer: '',
-      feedback: ''
+      feedback: '',
+      answered: false
     }
   },
   created() {
@@ -51,6 +52,7 @@ export default {
     nextSentence() {
       this.feedback = ''
       this.userAnswer = ''
+      this.answered = false
       this.currentSentence = this.sentences[
         Math.floor(Math.random() * this.sentences.length)
       ]
@@ -76,7 +78,7 @@ export default {
       if (foundIndex >= 0) {
         this.missingWordIndex = foundIndex
         this.originalWord = foundWord
-        this.options = this.verbs[foundBase]
+        this.options = this.shuffleArray([...this.verbs[foundBase]])
       }
     },
     checkAnswer() {
@@ -86,6 +88,10 @@ export default {
       } else {
         this.feedback = `Incorrect. The correct answer is "${this.originalWord}".`
       }
+      this.answered = true
+    },
+    shuffleArray(arr) {
+      return arr.sort(() => Math.random() - 0.5)
     }
   }
 }
