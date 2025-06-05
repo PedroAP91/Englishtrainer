@@ -1,10 +1,14 @@
 <template>
-  <div class="quiz-wrapper">
-    <div class="quiz-container">
+  <div
+    class="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 font-sans"
+  >
+    <div
+      class="w-full max-w-md bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 text-center"
+    >
       <transition name="fade" mode="out-in">
         <div v-if="!currentSentence" key="start">
           <button
-            class="primary-btn"
+            class="mt-4 px-4 py-2 rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring"
             @click="startQuiz"
             aria-label="Iniciar el quiz"
           >
@@ -19,10 +23,11 @@
             v-model="userAnswer"
             :disabled="answerChecked"
             @keyup.enter="!answerChecked && checkAnswer"
+            class="mt-4 w-full border rounded-md p-2 dark:bg-gray-700 dark:border-gray-500"
           />
           <button
             v-if="!answerChecked"
-            class="primary-btn"
+            class="mt-4 px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring"
             @click="checkAnswer"
             aria-label="Comprobar respuesta"
           >
@@ -33,7 +38,7 @@
           </transition>
           <button
             v-if="answerChecked"
-            class="primary-btn"
+            class="mt-4 px-4 py-2 rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring"
             @click="nextSentence"
             aria-label="Cargar siguiente frase"
           >
@@ -66,7 +71,11 @@ export default {
   computed: {
     feedbackClass() {
       if (this.isCorrect === null) return ''
-      return this.isCorrect ? ['feedback', 'correct'] : ['feedback', 'incorrect']
+      const base = ['mt-4', 'text-lg', 'font-bold', 'p-2', 'rounded-md']
+      const color = this.isCorrect
+        ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200'
+        : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200'
+      return [...base, color]
     }
   },
   methods: {
@@ -102,68 +111,6 @@ export default {
 </script>
 
 <style scoped>
-.quiz-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f2f2f2;
-  font-family: 'Segoe UI', Roboto, 'Open Sans', sans-serif;
-}
-
-.quiz-container {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-}
-
-.primary-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  background-color: #42b983;
-  color: #fff;
-  cursor: pointer;
-  font-size: 1em;
-  margin-top: 10px;
-}
-.primary-btn:hover {
-  background-color: #36966f;
-}
-
-input,
-select {
-  padding: 8px 12px;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1em;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.feedback {
-  margin-top: 15px;
-  font-size: 1.2em;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.correct {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.incorrect {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -182,37 +129,6 @@ select {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  .quiz-wrapper {
-    background-color: #121212;
-    color: #ffffff;
-  }
-  .quiz-container {
-    background: #1e1e1e;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  }
-  .primary-btn {
-    background-color: #3a8f78;
-  }
-  .primary-btn:hover {
-    background-color: #2c6c59;
-  }
-  input,
-  select {
-    background-color: #2c2c2c;
-    border-color: #555;
-    color: #ffffff;
-  }
-  .correct {
-    background-color: #225533;
-    color: #d5f5e3;
-  }
-  .incorrect {
-    background-color: #5d222a;
-    color: #f5d5da;
-  }
 }
 </style>
 
